@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+.leerMasPerma{
+    /* width: 100% !important; */
+    z-index: 2;
+    transition: all .5s;
+   
+}
+.leerMasPerma .card{
+    width: 95% !important;
+    aspect-ratio: auto !important ;
+}
+.ocultar{
+    display: none;
+}
+.leerMasPerma .card .ocultar{
+    display: initial;
+}

@@ -1,0 +1,241 @@
+
+.line span{
+ height: 10px;
+width: 100%;
+
+}
+
+.amarillo.btn:hover {
+    background-color: #971b2f;
+    color: #fff;
+    box-shadow: 5px 10px 20px #e1a113;
+  }
+
+  input:hover, select:hover {
+
+    box-shadow: 5px 10px 20px #e1a113;
+  }
+
+  .btn-check:checked + .btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check) + .btn:active{
+    box-shadow: 5px 10px 20px;
+  }
+
+.mh60{
+    line-height: 1.5em;
+    min-height: 3em;
+}
+.mh6{
+    line-height: 1.5em;
+    min-height: 6em;
+}
+.amarillo{
+    background-color: #e1a113;
+    color: #fff;
+}
+
+.rojo{
+    background-color: #971b2f;
+    color: #fff;
+}
+
+.azul{
+    background-color: #004b81;
+    color: #fff;
+}
+
+.text-amarillo{
+    color: #e1a113;
+}
+
+.text-rojo{
+    color: #971b2f;
+}
+
+.text-azul{
+    color: #004b81;
+}
+.leerMas{
+     position: fixed;
+    z-index: 2;
+    top: 115px;
+    width: 80%;
+    height: 80%; 
+    transition: all .5s;
+    
+}
+.leerMas .card{
+    box-shadow: 20px 20px 50px 500px #004b81 !important;
+
+}
+
+.leerMasPerma{
+    width: 100% !important;
+    z-index: 2;
+    height: 80% !important;
+    transition: all .5s;
+   
+}
+.leerMasPerma .card{
+   box-shadow: 20px 20px 50px 500px #004b81 !important;
+    width: 95% !important;
+    aspect-ratio: auto ;
+    height: auto;
+}
+
+
+.bg-img{
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    width: 100px;
+    aspect-ratio: 1;
+    background-image: url('https://cordoba.gob.ar/wp-content/uploads/2023/12/cropped-Logo-Color_Mesa-de-trabajo-1.png');
+    background-size: contain;
+    background-size: contain;
+    transform: translateX(-50%);
+    opacity: 0.3;
+
+}
+.bg-img.unico{
+    bottom: 200px;
+    left: 70%;
+}
+
+/* .lugar{
+    line-height: 1.5em;
+  min-height: 3em;
+  max-height: 6.4em;
+  overflow: hidden;
+} */
+
+.borde-color {
+    border: #004b81 1px solid;
+    box-shadow: 20px 20px 50px 0px #004b81;
+  }
+
+  .borde-color-p {
+    border: #004b81 1px solid;
+    box-shadow: 0px 0px 25px 0px #004b81;
+  }
+ .card-footer i{
+    color: #004b81;
+  }
+
+  .social a {
+    padding: 7px 0px;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    width: 35px;
+    text-align: center;
+    margin: 10px;
+    color: #fff;
+    background-color: #004b81;
+    }
+
+    .categoria {
+        background-color: #971b2f;
+        position: absolute;
+        left: -20px;
+        width: max-content;
+        top: 30px;
+        padding: 12px;
+        font-size: 1.5em;
+        font-weight: bold;
+        border-radius: 50px 50px 0;
+        box-shadow: 5px 5px 15px #e1a113;
+        color: #fff;
+        }
+
+        .show-estado {
+            background-color: #e1a113;
+            position: absolute;
+            left: -20px;
+            width: max-content;
+            top: 100px;
+            padding: 12px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 50px 50px 0;
+            box-shadow: 5px 5px 15px #971b2f;
+            color: #fff;
+            }
+
+.minh-500{
+    min-height: 470px;
+}
+
+.l2 {
+    -webkit-line-clamp: 2; /* Limita a 2 líneas */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.l3 {
+    -webkit-line-clamp: 3; /* Limita a 3 líneas */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.img{
+    aspect-ratio: 16/9;
+    object-fit: cover; 
+    max-height: 200px; 
+    object-position: bottom;
+}
+.card-body{
+    flex: 0 1 auto !important;
+}
+
+.card-permanente{
+    height: auto !important;
+}
+
+swipper{
+     height: auto !important;
+}
+@media (min-width: 748px){
+    .card-permanente{
+        width: 350px; 
+        min-height: 250px;
+    }
+}
+
+
+/***** LOADER ****/
+.loader{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.loader img{
+    position: relative;
+    width: 80px;
+    top: 0px;
+    left: 85px;
+}
+.spinner {
+    width: 6em;
+    height: 6em;
+    cursor: not-allowed;
+    border-radius: 50%;
+    border: 2px solid #444;
+    box-shadow: -15px -15px 15px #004b81, 0px -15px 15px 0px #9c32e2, 15px -15px 15px #971b2f , 15px 0 15px #ff0b0b, 15px 15px 15px 0px#ff5500, 0 15px 15px 0px #e1a113, -15px 15px 15px 0px #ffb700;
+    animation: rot55 3s linear infinite;
+  }
+  
+  .spinnerin {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) ;
+  }
+  
+  @keyframes rot55 {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  

@@ -1,0 +1,223 @@
+<div class="row d-flex justify-content-center" *ngIf="!detalleActividad">
+<div class="col-10 mt-3">
+  <div class="alert alert-danger " role="alert" *ngIf="error">
+    Debe indicar el codigo del archivo de origen de datos
+  </div>
+  <nav class="navbar navbar-dark azul rounded p-3">
+    <span class="navbar-brand fs-2 ms-3">Filtros</span>
+    <div class="estado">
+      <input type="radio" class="btn-check" name="options" id="abiertas" autocomplete="off" (change)="estado(1)" [checked]="valEstado === 1" checked>
+      <label class="btn amarillo ms-3" for="abiertas" >ABIERTAS</label>
+      
+      <input type="radio" class="btn-check" name="options" id="cerradas" autocomplete="off" (change)="estado(2)" [checked]="valEstado === 2">
+      <label class="btn amarillo ms-3" for="cerradas">CERRADAS</label>
+      
+      <input type="radio" class="btn-check" name="options" id="resultados" autocomplete="off" (change)="estado(3)" [checked]="valEstado === 3">
+      <label class="btn amarillo ms-3" for="resultados" >RESULTADOS</label>
+    </div>
+<div class="categorias d-flex gap-2 align-items-center">
+    <span class="fs-2" *ngIf="BandCategoria">Actividades {{ this.tipo.toUpperCase()}}</span>
+  
+        <select class="form-select fs-3 my-2" aria-label="Categorias" [(ngModel)]="tipo" (change)="categoria()" *ngIf="!BandCategoria">
+          <option selected="true" (click)="borrarFiltro();">Categorías</option>    
+          <option value="{{cat.toLowerCase()}}" *ngFor="let cat of tiposList">{{cat}}</option>
+  
+        </select>
+        <button class="btn amarillo h-25 " (click)="borrarFiltro()" *ngIf="!BandCategoria">Borrar</button>
+</div>
+
+
+    <form class="form-inline me-3">
+      <input class="form-control mr-sm-2 fs-3" name="buscar" placeholder="Buscar titulo o descripción" aria-label="Buscar" [(ngModel)]="strFiltro" (keydown)="Filtro()">
+    </form>
+  </nav>
+  <div class="loader position-relative d-flex justify-content-center" *ngIf="!this.spiner">
+    <img src="https://cordoba.gob.ar/wp-content/uploads/2023/12/cropped-Logo-Color_Mesa-de-trabajo-1.png" alt="" width="50px" srcset="">
+    <div class="spinner" >
+      <div class="spinnerin">
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-warning alert-dismissible fade show col-8 offset-2 mt-5 fs-3 text-center"  role="alert" *ngIf="filtroActividades.length==0 && this.spiner">
+    <strong>UPSS!</strong> No se encontró ningun llamado.
+  </div>
+</div>
+<div class="col-xl-3 col-10 m-4 " id="{{ 'card-' + act.id_llamado }}" *ngFor="let act of this.filtroActividades | slice:0:pageSize let i= index" >
+  <div class="card row h-100 borde-color" role="button" (click)="abrirDetalle(act.id_llamado)" *ngIf="this.spiner">
+    <div class="card-header p-0">
+   
+      <div class="row">
+        <div class="categoria fs-5" >
+          <span>{{ act.tipo[0] }}</span>
+        </div>
+
+        <img src="{{act.imagen}}"  class="img col-md-12" *ngIf="act.imagen">
+        <img src="https://cultura.cordoba.gob.ar/wp-content/uploads/sites/20/2024/04/DSC01502-scaled-e1712243903263.jpg" class="img col-md-12" *ngIf="!act.imagen">
+        <div class="col-md-12">
+          <h4 class="card-title mt-2 fw-bold ms-3">
+            <span class="badge rounded-pill amarillo fs-4" *ngIf="esHoy(act.fecha_ini)">HOY</span>
+          {{act.nombre}}
+                </h4>
+              </div>
+      </div>
+      <div class="row m-2 text-center ">
+        <div class="col-md-6 col-6">
+          <b><small>Inicio:</small></b>
+          <p class="m-0 fs-4 ">{{act.fecha_ini}} <br> {{act.hora_ini}} <span *ngIf="act.hora_ini">hs</span></p>
+        </div>
+        <div class="col-md-6 col-6">
+          <b *ngIf="act.fecha_fin"><small>Fin:</small></b>
+          <p class="m-0 fs-4">{{act.fecha_fin }} <br> {{act.hora_fin}}<span *ngIf="act.hora_fin">hs</span></p>
+        </div>
+       
+      </div>
+      </div>
+      <div class="line d-flex p-0">
+        <span class="amarillo"></span>
+        <span class="rojo"></span>
+        <span class="azul"></span>
+      </div>
+    
+    <div class="card-body row position-relative align-text-top">
+
+      <div class="col-md-12 ">
+        
+      <p class="descripcion align-items-start fs-4 l3" *ngIf="!sigue" [innerHTML]='act.descripcion'>
+      </p>
+      </div>
+    </div>
+    <div class="bg-img"></div>
+    <div class="footer ">
+
+      <div class=" mh60 ">
+        <p *ngIf="act.precio > '0'">Precio <br> $ {{act.precio}}</p>  
+        <b> <p *ngIf="act.precio == '-'">A confirmar</p></b>
+        <b><p *ngIf="act.precio == '0'">¡Gratuito!</p></b>  
+      </div>
+      <div class="row justify-content-end" *ngIf="act.estado ==3">
+        <div class="col-md-4">
+          <a role="button" href="{{ act.resultado }}" class="btn azul mb-4 fs-4" *ngIf="act.resultado" target="_blank">Resultado</a>
+        </div>
+      </div>
+      <div class="row justify-content-between text-center" *ngIf="act.estado !=3">
+        <div class="col-md-4">
+          <a role="button" href="{{ act.bases }}" class="btn azul mb-4 fs-6" *ngIf="act.bases" target="_blank">Bases y Condiciones</a>
+        </div>
+        <div class="col-md-4">
+          <a role="button" href="{{ act.masInfo }}" class="btn azul mb-4 fs-5" *ngIf="act.masInfo" target="_blank">Más Info</a>
+        </div>
+        <div class="col-md-4">
+          <a role="button" href="{{ act.inscripcion }}" class="btn azul mb-4 fs-5" *ngIf="act.inscripcion" target="_blank">Inscribite</a>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+    <div class="row my-5">
+      <div class="col-md-12 text-center">
+      <a role="button"  class="btn azul fs-3"  target="_blank" *ngIf="this.filtroActividades.length > pageSize" (click)="mas()">Cargar Más</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row d-flex justify-content-center mx-2" *ngIf="detalleActividad">
+
+    <div class="col-md-6 mt-5 pb-5 position-relative">
+        <div class="card borde-color" *ngFor="let act of Actividad" >
+          <div class="card-header ">
+            <button class="btn azul float-end" (click)="volver()"><i class="fa fa-chevron-left" aria-hidden="true"></i> Volver</button>
+            <div class="row fs-4">
+              <div class="categoria fs-5">
+                <span>{{ act.tipo }}</span>
+              </div>
+              <div class="show-estado fs-5 text-uppercase" [ngSwitch]="act.estado">
+                <span *ngSwitchCase="1">Abierta</span>
+                <span *ngSwitchCase="2">Cerrada</span>
+                <span *ngSwitchCase="3">Resultado</span>
+              </div>
+              <div class="col-md-12 m-0 ">
+            <img src="{{act.imagen}}" *ngIf="act.imagen" width="50%"  style="border-radius:10px; float: left; margin: 20px 20px 10px 0">
+            <img src="https://cultura.cordoba.gob.ar/wp-content/uploads/sites/20/2024/04/DSC01502-scaled-e1712243903263.jpg" *ngIf="!act.imagen" width="50%" style="border-radius:10px; float: left; margin: 20px 20px 10px 0">
+            <div class="social d-flex">
+              <span class="me-2 pt-3">Compartir:</span>
+              <a href="http://www.google.com/calendar/event?action=TEMPLATE&text={{act.nombre}}&dates={{act.fecha_ini}}T{{act.hora_ini}}/{{act.fecha_fin}}T{{act.hora_fin}}&details= {{act.descripcion}}&location= {{act.masInfo}}&trp=false&sprop={{UrlActual}}&sprop=name:Córdoba Capital" target="_blank">
+                <i class="fa fa-calendar-check" aria-hidden="true"></i>
+              </a>
+              <a href="https://www.facebook.com/sharer/sharer.php?u={{UrlActual}}" target="_blank">
+                <i class="fab fa-facebook-f" aria-hidden="true"></i>
+              </a>
+              <a href="https://twitter.com/intent/tweet?text={{act.nombre}}&url={{UrlActual}}&hashtags=evento,MuniCBA" target="_blank">
+                <i class="fab fa-twitter"></i>
+              </a> 
+              <a href="https://api.whatsapp.com/send/?text={{UrlActual}}" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+              </a> 
+              <a (click)="copiarAlPortapapeles(UrlActual)" role="button">
+                <i class="fa fa-share" aria-hidden="true"></i> 
+              </a>             
+
+            </div>
+            <div class=" h-100" >
+              <div class="bg-img unico"></div>
+                <h3 class="card-title mt-2 fw-bold">
+                  <span class="badge rounded-pill amarillo fs-4" *ngIf="esHoy(act.fecha_ini)">HOY</span>
+                  {{act.nombre}}</h3>
+                <div class="my-4">
+                  <div class="descripcion align-items-start fs-4" [innerHTML]='act.descripcion'>
+                  </div>
+                  </div>
+                  <div class="row justify-content-end" *ngIf="act.estado ==3">
+                    <div class="col-md-4">
+                      <a role="button" href="{{ act.resultado }}" class="btn azul mb-4 fs-4" *ngIf="act.resultado" target="_blank">Resultado</a>
+                    </div>
+                  </div>
+                  <div class="row justify-content-between text-center" *ngIf="act.estado !=3">
+                    <div class="col-md-4">
+                      <a role="button" href="{{ act.bases }}" class="btn azul mb-4 fs-6" *ngIf="act.bases" target="_blank">Bases y Condiciones</a>
+                    </div>
+                    <div class="col-md-4">
+                      <a role="button" href="{{ act.masInfo }}" class="btn azul mb-4 fs-5" *ngIf="act.masInfo" target="_blank">Más Info</a>
+                    </div>
+                    <div class="col-md-4">
+                      <a role="button" href="{{ act.inscripcion }}" class="btn azul mb-4 fs-5" *ngIf="act.inscripcion" target="_blank">Inscribite</a>
+                    </div>
+                  </div>
+              </div>
+          </div>
+
+
+          </div>
+          
+        </div>
+        <div class="line d-flex p-0 m-0">
+          <span class="amarillo"></span>
+          <span class="rojo"></span>
+          <span class="azul"></span>
+        </div>
+        <div class="card-footer mb-0 p-0 d-flex justify-content-center">
+          
+          <div class="row m-3 fs-4 w-75  text-center justify-content-center">
+            <div class="col-md-4 col-6">
+              <b><i class="fa fa-clock"></i> <small> Inicio:</small></b>
+              <p class="m-0  "> {{act.fecha_ini}} - {{act.hora_ini}}hs</p>
+            </div>
+            <div class="col-md-4 col-6">
+              <b> <i class="fa fa-clock"></i><small> Fin:</small></b>
+              <p class="m-0 "> {{act.fecha_fin }} - {{act.hora_fin}}hs</p>
+            </div>
+            <div class="col-md-4 " *ngIf="act.precio">
+              <p *ngIf="act.precio > '0'"><i class="fa fa-tag"></i><small > Precio</small> <br>$ {{act.precio}}</p>
+              <b> <p *ngIf="act.precio == '-'">A confirmar</p></b>
+              <!-- <b> <p *ngIf="(act.precio | slice:0:1) == '/'">Desde $ {{act.precio | slice:1}}</p></b> -->
+              <b><p *ngIf="act.precio == '0'"><i class="fa fa-tag"></i> ¡Gratuito!</p></b>
+            </div>
+          </div>
+          
+        </div>
+        
+            
+        </div>
+    </div>
+  
+  </div>
+  
